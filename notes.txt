@@ -1,0 +1,77 @@
+Train dataset contains:
+- Questions
+- Answers
+- Labels (which is true and which is false)
+- Consistency id (not sure what this is yet)
+
+
+Algorithm:
+Parameters: K, N, T0, Tmin, beta
+
+Load the train dataset as your unlabeled dataset (only questions and answers (examples))
+
+Initalise D (labeled dataset) as empty set - to be filled in 
+
+Randomly select and label K examples - update D
+
+for n to N:
+    Update temperature
+        T <- max(Tmin, T0/1+beta(log(n)))
+
+    Sample example from unlabeled dataset (question-answer pairs)
+    
+    Assign label
+        yhati = argmax(Ptheta(yi|xi, D \ ({xi, yi})))
+    
+    Temporarily update
+        Dhat = D U ({xi, yhati})
+
+    delta = U(Dhat) - U(D)
+    
+    if delta > 0:
+        D = Dhat
+    else:
+        if random(0, 1) < exp(delta/T):
+            D = Dhat
+
+
+Scoring function:
+
+U(D) = alpha * Ptheta (D) - L(D)
+
+Pθ(D) = sum(N, i-0)log Pθ(yi|xi, D \ (xi, yi))
+I(D) = sum(N, i=1) sum(N, j=1) c(xi, yi, xj , yj )
+
+
+
+    
+    
+Might need to update how to use the models
+
+After using Cursor:
+
+The algorithm makes sense
+Randomly label K examples and update D - it now has K labelled examples. 
+
+In the first random sample from D_unlabel - you label this with K labelled examples in the context
+
+You could randomly sample a label that has already been labelled (i.e. in the original K randomly labelled examples)
+
+Does the scoring function make sense. 
+
+In the craft_label_prompt - I don't think it needs to have the chat version - we either do this by zero-shot in which it doesn't need to have examples. 
+
+Do we need to extraction logic?
+
+How do we get logprobs from Hyperbolic AI. I don't think we can. 
+
+
+
+Things to do:
+
+- Evaluate zero-shot base on test
+- Evaluate zero-shot chat on test
+- Evaluate base on test with golden labels in context
+- Evaluate base on test with ICM labels in context
+
+Plot
