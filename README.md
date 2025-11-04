@@ -25,8 +25,7 @@ export HYPERBOLIC_API_KEY="your-api-key-here"
 ## Core Scripts
 
 - `algorithm.py` - Main ICM algorithm implementation (Algorithm 1 from paper)
-- `algorithm_test_small.py` - Test ICM on small 20-example subset
-- `icm_utils.py` - ICM utilities for base model with logprobs support
+- `icm_utils.py` - ICM utilities for base model
 - `utils.py` - General utilities supporting both base and chat models
 - `zero_shot.py` - Zero-shot evaluation
 - `multi_shot.py` - Multi-shot evaluation with in-context examples
@@ -34,10 +33,6 @@ export HYPERBOLIC_API_KEY="your-api-key-here"
 
 ## Usage
 
-Test ICM algorithm on small subset:
-```bash
-python3 algorithm_test_small.py
-```
 
 Run zero-shot evaluation:
 ```bash
@@ -54,13 +49,10 @@ Run full ICM algorithm:
 python3 algorithm.py
 ```
 
-## Key Features
-
-- **Mutational Predictability**: Score function using log probabilities from the model
-- **Logical Consistency**: Constraint checking for TruthfulQA (allows multiple true answers per question)
-- **Simulated Annealing**: Temperature-based search with adaptive schedule
-- **Score Caching**: Optimized to reduce API calls
-- **Forward Pass Tracking**: Monitors efficiency (target ~2.5 forward passes per example)
+Run multi-shot evaluation with golden labels:
+```bash
+python3 multi_shot.py --label_source icm --max_examples 256
+```
 
 ## Results
 
